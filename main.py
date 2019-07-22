@@ -11,6 +11,7 @@ from sklearn.externals.six import StringIO
 from sklearn import preprocessing
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer, make_column_transformer
+from sklearn.impute import SimpleImputer
 import pydotplus
 def extract_data():
     """Extract data of interest from the Used cars dataset from kaggle
@@ -38,13 +39,13 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     """
     cars_df = pd.read_csv(csv_file)
     copy_df = cars_df.fillna(value=0)
-    ct = make_column_transformer(
-        (StandardScaler(), ['year', 'lat', 'long', 'county_fips','state_fips', 'weather']),
-        (OneHotEncoder(), ['make', 'manufacturer', 'condition', 
-          'cylinders', 'fuel', 'title_status', 'transmission',
-          'vin', 'drive', 'size', 'type', 'paint_color'])
-    )
-    X = ct.fit_transform(copy_df.drop(["price"], axis=1))
+    numerical_features = copy_df.dtypes == 'float'
+    categorical_features = ~numerical_features
+    preprocess = make_column_transformer(
+        (numerical_features, StandardScaler()),
+        (categorical_features, OneHotEncoder()))
+    new_df = copy_df.drop(["price"], axis=1)
+    X = preprocess.fit_transform(new_df)
     y = cars_df["price"]
     return X, y
 
