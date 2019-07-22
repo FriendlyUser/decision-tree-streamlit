@@ -38,14 +38,14 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     """reads la used cars dataset
     """
     cars_df = pd.read_csv(csv_file)
+    copy_df = copy_df.drop(["price"], axis=1)
     copy_df = cars_df.fillna(value=0)
-    numerical_features = copy_df.dtypes == 'float'
+    numerical_features = copy_df.dtypes == 'float' or copy_df.dtypes == 'int'
     categorical_features = ~numerical_features
     preprocess = make_column_transformer(
         (numerical_features, StandardScaler()),
         (categorical_features, OneHotEncoder()))
-    new_df = copy_df.drop(["price"], axis=1)
-    X = preprocess.fit_transform(new_df)
+    X = preprocess.fit_transform(copy_df)
     y = cars_df["price"]
     return X, y
 
