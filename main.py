@@ -3,11 +3,12 @@ import pandas as pd
 import os
 import argparse
 ############### MACHINE LEARNING ###############################################
-from sklearn.tree import DecisionTreeClassifier # Import Decision Tree Classifier
+from sklearn.tree import DecisionTreeRegressor # Import Decision Tree Classifier
 from sklearn.model_selection import train_test_split # Import train_test_split function
 from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
 from sklearn.tree import export_graphviz
 from sklearn.externals.six import StringIO  
+from sklearn import preprocessing
 import pydotplus
 def extract_data():
     """Extract data of interest from the Used cars dataset from kaggle
@@ -35,6 +36,7 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     """
     cars_df = pd.read_csv(csv_file)
     X = cars_df.drop(["price"], axis=1)
+    cars_df = preprocessing.OneHotEncoder().fit_transform(cars_df)
     y = cars_df.price
     return X, y
 
@@ -47,7 +49,7 @@ def main():
     X, y = read_used_cars()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1) # 80% training and 20% test
     # Create Decision Tree classifer object
-    clf = DecisionTreeClassifier()
+    clf = DecisionTreeRegressor()
 
     # Train Decision Tree Classifer
     clf = clf.fit(X_train,y_train)
