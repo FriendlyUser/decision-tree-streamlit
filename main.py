@@ -68,9 +68,9 @@ if __name__ == "__main__":
     parser.add_argument("-i", "--image", help="Path to image", default="pear.png") 
 
     # Add debug mode
-    parser.add_argument("-d","--debug", type=str2bool, nargs='?',
-                        const=True, default=False,
-                        help="Run Debug Functions")
+    # parser.add_argument("-d","--debug", type=str2bool, nargs='?',
+    #                     const=True, default=False,
+    #                     help="Run Debug Functions")
     args = parser.parse_args()
     main()
 
