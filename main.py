@@ -43,7 +43,7 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     copy_df = cars_df.fillna(value=0)
     # numerical_features = copy_df.dtypes == 'float'
     numerical_features = copy_df.select_dtypes(include=[np.number]).columns.tolist()
-    categorical_features = copy_df.select_dtypes(exclude=["number","bool_","object_"])
+    categorical_features = copy_df.select_dtypes(exclude=["number","bool_","object_"]).columns.tolist()
     preprocess = make_column_transformer(
         (StandardScaler(), numerical_features),
         (OneHotEncoder(), categorical_features))
