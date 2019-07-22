@@ -37,6 +37,7 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     """reads la used cars dataset
     """
     cars_df = pd.read_csv(csv_file)
+    y = cars_df["price"]
     cars_df = cars_df.fillna(value='0')
     ct = make_column_transformer(
         (StandardScaler(), ['year', 'lat', 'long', 'county_fips','state_fips', 'weather']),
@@ -46,7 +47,6 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     )
     X = cars_df.drop(["price"], axis=1)
     cars_df = ct.fit_transform(X)
-    y = cars_df.price
     return X, y
 
 #### MAIN logic here
