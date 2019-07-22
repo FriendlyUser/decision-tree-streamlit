@@ -35,7 +35,7 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     """reads la used cars dataset
     """
     cars_df = pd.read_csv(csv_file)
-    cars_df.fillna(value=0)
+    cars_df = cars_df.fillna(value=0)
     X = cars_df.drop(["price"], axis=1)
     cars_df = preprocessing.OneHotEncoder().fit_transform(cars_df)
     y = cars_df.price
