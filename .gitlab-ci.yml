@@ -1,5 +1,4 @@
 a1_py:
-  stage: py
   # My goal is to get a program that compiles with python 3.5
   image: python:3.6-7
   before_script:
