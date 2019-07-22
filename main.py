@@ -49,7 +49,7 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
         (OneHotEncoder(), categorical_features))
     X = preprocess.fit_transform(copy_df)
     y = cars_df["price"]
-    return X, y
+    return X, y, numerical_features.append(categorical_features)
 
 #### MAIN logic here
 def main():
@@ -57,7 +57,7 @@ def main():
     if os.path.exists('la_cars_full.csv') == False:
         extract_data()
 
-    X, y = read_used_cars()
+    X, y, feature_list = read_used_cars()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1) # 80% training and 20% test
     # Create Decision Tree classifer object
     clf = DecisionTreeRegressor()
@@ -72,7 +72,7 @@ def main():
     dot_data = StringIO()
     export_graphviz(clf, out_file=dot_data,  
                     filled=True, rounded=True,
-                    special_characters=True, feature_names = X.columns.tolist(),class_names=['0','1'])
+                    special_characters=True, feature_names = feature_list,class_names=['0','1'])
     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
     graph.write_png('diabetes.png')
 
