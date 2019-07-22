@@ -9,6 +9,8 @@ from sklearn import metrics #Import scikit-learn metrics module for accuracy cal
 from sklearn.tree import export_graphviz
 from sklearn.externals.six import StringIO  
 from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer, make_column_transformer
 import pydotplus
 def extract_data():
     """Extract data of interest from the Used cars dataset from kaggle
@@ -36,8 +38,14 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     """
     cars_df = pd.read_csv(csv_file)
     cars_df = cars_df.fillna(value=0)
+    ct = make_column_transformer(
+    [
+        (['manufacturer', 'make', 'condition', 
+          'cylinders', 'fuel', 'title_status', 'transmission',
+          'vin', 'drive', 'size', 'type', 'paint_color'], OneHotEncoder())
+    ])
     X = cars_df.drop(["price"], axis=1)
-    cars_df = preprocessing.OneHotEncoder().fit_transform(cars_df)
+    cars_df = ct.fit_transform(X)
     y = cars_df.price
     return X, y
 
