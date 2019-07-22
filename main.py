@@ -39,8 +39,8 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     cars_df = pd.read_csv(csv_file)
     cars_df = cars_df.fillna(value='0')
     ct = make_column_transformer(
-        (StandardScaler(), ['year', 'manufacturer', 'lat', 'long', 'county_fips','state_fips', 'weather']),
-        (OneHotEncoder(), ['make', 'condition', 
+        (StandardScaler(), ['year', 'lat', 'long', 'county_fips','state_fips', 'weather']),
+        (OneHotEncoder(), ['make', 'manufacturer', 'condition', 
           'cylinders', 'fuel', 'title_status', 'transmission',
           'vin', 'drive', 'size', 'type', 'paint_color'])
     )
