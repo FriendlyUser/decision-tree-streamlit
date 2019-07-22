@@ -1,0 +1,15 @@
+a1_py:
+  stage: py
+  # My goal is to get a program that compiles with python 3.5
+  image: python:3.6-7
+  before_script:
+    - cd A/a1
+    - pip install -r requirements.txt
+  script:
+    - python3 main.py
+    # Figure this out next assignment
+    # - xvfb-run python3 solution.py
+  artifacts:
+    paths:
+      - '*.png'
+    expire_in: 1 weeks
