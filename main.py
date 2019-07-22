@@ -40,7 +40,7 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     cars_df = pd.read_csv(csv_file)
     copy_df = cars_df.drop(["price"], axis=1)
     copy_df = cars_df.fillna(value=0)
-    numerical_features = copy_df.dtypes == 'float' or copy_df.dtypes == 'int'
+    numerical_features = copy_df.dtypes == 'float'
     categorical_features = ~numerical_features
     preprocess = make_column_transformer(
         (numerical_features, StandardScaler()),
