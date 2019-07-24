@@ -13,6 +13,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer, make_column_transformer
 from sklearn.impute import SimpleImputer
 import pydotplus
+from sklearn.model_selection import KFold
 import numpy as np
 def extract_data():
     """Extract data of interest from the Used cars dataset from kaggle
@@ -61,7 +62,8 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1) # 80% training and 20% test
     # Create Decision Tree classifer object
     clf = DecisionTreeRegressor()
-
+    # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
+    kf = KFold(n_splits=10)
     # Train Decision Tree Classifer
     clf = clf.fit(X_train,y_train)
 
@@ -75,6 +77,18 @@ def main():
                     special_characters=True, feature_names = feature_list,class_names=['0','1'])
     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
     graph.write_png('diabetes.png')
+    # Train decision tree with kfold cross validation
+        # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
+    for train_index, test_index in kf.split(X):
+        print("TRAIN:", train_index, "TEST:", test_index)
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+        # Train Decision Tree Classifer
+        clf = clf.fit(X_train, y_train)
+         y_pred = clf.predict(X_test)
+        # Model Accuracy, how often is the classifier correct?
+        print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+
 
 if __name__ == "__main__":
     # This library handles argument parsing.  You don't need to worry about this for this assignment.
