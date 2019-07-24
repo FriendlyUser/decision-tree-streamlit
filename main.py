@@ -85,7 +85,7 @@ def main():
         y_train, y_test = y[train_index], y[test_index]
         # Train Decision Tree Classifer
         clf = clf.fit(X_train, y_train)
-         y_pred = clf.predict(X_test)
+        y_pred = clf.predict(X_test)
         # Model Accuracy, how often is the classifier correct?
         print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
