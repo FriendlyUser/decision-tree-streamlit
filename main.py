@@ -36,6 +36,7 @@ def extract_data():
     # url, city, price, year, manufacturer, make, condition, cylinders, fuel, odometer, title_status, transmission, vin, drive, size, type, paint_color, image_url, lat, long, county_fips, county_name, state_fips, state_code, state_name, weather
 
 
+# part c
 def read_used_cars(csv_file='la_trimmed_features.csv'):
     """reads la used cars dataset
     """
@@ -52,12 +53,11 @@ def read_used_cars(csv_file='la_trimmed_features.csv'):
     y = cars_df["price"]
     return X, y, numerical_features.append(categorical_features)
 
-#### MAIN logic here
 def main():
     print("Doing something heere")
     if os.path.exists('la_cars_full.csv') == False:
         extract_data()
-
+    # part d
     X, y, feature_list = read_used_cars()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1) # 80% training and 20% test
     # Create Decision Tree classifer object
@@ -70,7 +70,7 @@ def main():
     #Predict the response for test dataset
     y_pred = clf.predict(X_test)
     # Model Accuracy, how often is the classifier correct?
-    print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+    print("Mean Error:",metrics.mean_absolute_error(y_test, y_pred))
     dot_data = StringIO()
     export_graphviz(clf, out_file=dot_data,  
                     filled=True, rounded=True,
@@ -79,6 +79,7 @@ def main():
     graph.write_png('diabetes.png')
     # Train decision tree with kfold cross validation
         # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
+    list_MSE = []
     for train_index, test_index in kf.split(X):
         print("TRAIN:", train_index, "TEST:", test_index)
         X_train, X_test = X[train_index], X[test_index]
@@ -87,7 +88,9 @@ def main():
         clf = clf.fit(X_train, y_train)
         y_pred = clf.predict(X_test)
         # Model Accuracy, how often is the classifier correct?
-        print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+        print("MSE:",metrics.mean_absolute_error(y_test, y_pred))
+        list_MSE.append(metrics.mean_absolute_error(y_test, y_pred))
+    print(list_MSE)
 
 
 if __name__ == "__main__":
