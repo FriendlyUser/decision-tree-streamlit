@@ -61,7 +61,7 @@ def main():
     X, y, feature_list = read_used_cars()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1) # 80% training and 20% test
     # Create Decision Tree classifer object
-    clf = DecisionTreeRegressor()
+    clf = DecisionTreeRegressor(max_depth=8)
     # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
     kf = KFold(n_splits=10)
     # Train Decision Tree Classifer
