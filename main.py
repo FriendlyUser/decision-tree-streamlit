@@ -95,7 +95,7 @@ def main():
             metrics.r2_score(y_test, y_pred),
             metrics.median_absolute_error(y_test, y_pred)]
         df=pd.DataFrame([simple_list],columns=['k','Mean Absolute error', 'r2 score', 'Median Absolute Error'])
-        global_df.append(df)
+        global_df = global_df.append(df)
         fold = fold + 1
     global_df.to_latex('testing.tex')
 
