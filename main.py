@@ -79,7 +79,8 @@ def main():
     graph.write_png('diabetes.png')
     # Train decision tree with kfold cross validation
         # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
-    list_MSE = []
+    fold = 0
+    global_df = pd.DataFrame()
     for train_index, test_index in kf.split(X):
         print("TRAIN:", train_index, "TEST:", test_index)
         X_train, X_test = X[train_index], X[test_index]
@@ -89,8 +90,14 @@ def main():
         y_pred = clf.predict(X_test)
         # Model Accuracy, how often is the classifier correct?
         print("MSE:",metrics.mean_absolute_error(y_test, y_pred))
-        list_MSE.append(metrics.mean_absolute_error(y_test, y_pred))
-    print(list_MSE)
+        simple_list = [fold, 
+            metrics.mean_absolute_error(y_test, y_pred), 
+            metrics.r2_score(y_test, y_pred),
+            metrics.medium_absolute_error(y_test, y_pred)]
+        df=pd.DataFrame(simple_list,columns=['k','Mean Absolute error', 'r2 score', 'Medium Absolute Error'])
+        global_df.append(df)
+        fold = fold + 1
+    global_df.to_latex('testing.tex')
 
 
 if __name__ == "__main__":
