@@ -61,7 +61,7 @@ def main():
     X, y, feature_list = read_used_cars()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1) # 80% training and 20% test
     # Create Decision Tree classifer object
-    clf = DecisionTreeRegressor(max_depth=8)
+    clf = DecisionTreeRegressor(max_depth=10)
     # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
     kf = KFold(n_splits=10)
     # Train Decision Tree Classifer
@@ -76,7 +76,7 @@ def main():
                     filled=True, rounded=True,
                     special_characters=True, feature_names = feature_list,class_names=['0','1'])
     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
-    graph.write_png('diabetes.png')
+    graph.write_png('sample_graph.png')
     # Train decision tree with kfold cross validation
         # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
     fold = 0
@@ -101,14 +101,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # This library handles argument parsing.  You don't need to worry about this for this assignment.
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--image", help="Path to image", default="pear.png") 
-
-    # Add debug mode
-    # parser.add_argument("-d","--debug", type=str2bool, nargs='?',
-    #                     const=True, default=False,
-    #                     help="Run Debug Functions")
-    args = parser.parse_args()
     main()
 
